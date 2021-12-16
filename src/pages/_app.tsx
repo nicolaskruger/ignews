@@ -1,6 +1,7 @@
+import { NextPage } from "next";
 import { AppProps } from "next/app"
 
-function MyApp({ Component, pageProps }: AppProps) {
+const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
   return <Component {...pageProps} />;
 }
 
