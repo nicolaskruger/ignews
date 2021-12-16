@@ -6,7 +6,7 @@ import "../styles/global.scss";
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
   return <>
     <Header />
-    <Component {...pageProps} />;
+    <Component {...pageProps} />
   </>
 }
 

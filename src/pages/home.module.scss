@@ -2,7 +2,7 @@
   max-width: 1120px;
   margin: 0 auto;
   padding: 0 2rem;
-  height: calc(100vh - 5rem);
+  height: calc(100vh - 5rem - 1px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -33,5 +33,9 @@
       color: var(--cyan-500);
       font-weight: bold;
     }
+  }
+
+  button {
+    margin-top: 2.5rem;
   }
 }
