@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse, NextConfig } from "next"
 import { Readable } from "stream";
 import Stripe from "stripe";
 import { stripe } from "../../service/stripe";
+import { saveSubscription } from "./_lib/manageSubscription";
 
 const buffer = async (readeble: Readable) => {
     const chunks = [];
@@ -18,6 +19,19 @@ const buffer = async (readeble: Readable) => {
 const relevantEvents = new Set([
     'checkout.session.completed'
 ])
+
+const eventOperator = {
+    "checkout.session.completed": async (event: Stripe.Event) => {
+
+        const checkoutSession = event.data.object as Stripe.Checkout.Session;
+
+        await saveSubscription(
+            checkoutSession.subscription.toString(),
+            checkoutSession.customer.toString()
+        )
+    }
+}
+
 
 const webhooks = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method !== "POST") {
@@ -42,6 +56,16 @@ const webhooks = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (relevantEvents.has(type)) {
         console.log("Evento recebido", event)
+
+        try {
+            if (eventOperator[type]) {
+                await eventOperator[type](event);
+            } else {
+                throw new Error("Unhandle event.")
+            }
+        } catch (error) {
+            return res.json({ error: "webhookehandle failed" })
+        }
     }
 
     res.status(200).json({ received: true })
