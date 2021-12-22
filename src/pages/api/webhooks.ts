@@ -17,17 +17,35 @@ const buffer = async (readeble: Readable) => {
 }
 
 const relevantEvents = new Set([
-    'checkout.session.completed'
+    'checkout.session.completed',
+    "customer.subscription.created",
+    "customer.subscription.updated",
+    "customer.subscription.deleted",
 ])
 
+const subscriptionOper = async (event: Stripe.Event, created = false) => {
+    const subscription = event.data.object as Stripe.Subscription;
+
+    await saveSubscription(
+        subscription.id,
+        subscription.customer.toString(),
+        created
+    )
+
+}
+
 const eventOperator = {
+    "customer.subscription.created": (event: Stripe.Event) => subscriptionOper(event, true),
+    "customer.subscription.updated": subscriptionOper,
+    "customer.subscription.deleted": subscriptionOper,
     "checkout.session.completed": async (event: Stripe.Event) => {
 
         const checkoutSession = event.data.object as Stripe.Checkout.Session;
 
         await saveSubscription(
             checkoutSession.subscription.toString(),
-            checkoutSession.customer.toString()
+            checkoutSession.customer.toString(),
+            true
         )
     }
 }
