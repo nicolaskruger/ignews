@@ -18,7 +18,7 @@ const buffer = async (readeble: Readable) => {
 
 const relevantEvents = new Set([
     'checkout.session.completed',
-    "customer.subscription.created",
+    // "customer.subscription.created",
     "customer.subscription.updated",
     "customer.subscription.deleted",
 ])
@@ -35,7 +35,7 @@ const subscriptionOper = async (event: Stripe.Event, created = false) => {
 }
 
 const eventOperator = {
-    "customer.subscription.created": (event: Stripe.Event) => subscriptionOper(event, true),
+    // "customer.subscription.created": (event: Stripe.Event) => subscriptionOper(event, true),
     "customer.subscription.updated": subscriptionOper,
     "customer.subscription.deleted": subscriptionOper,
     "checkout.session.completed": async (event: Stripe.Event) => {
