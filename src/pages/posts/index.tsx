@@ -1,6 +1,8 @@
-import { NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
+import { getPrismicClient } from "../../service/primic";
 import styles from "./styles.module.scss";
+import Prismic from "@prismicio/client";
 
 const Posts: NextPage = () => {
     return (
@@ -34,3 +36,20 @@ const Posts: NextPage = () => {
 
 export default Posts
 
+export const getStaticProps: GetStaticProps = async () => {
+    const prismic = getPrismicClient();
+
+    const response = await prismic.query([
+        Prismic.predicates.at("document.type", "publication")
+    ], {
+        fetch: ['publication.title', 'publication.content'],
+    }
+    )
+
+    return ({
+        props: {
+
+        },
+        revalidate: 60 * 60 // 1h
+    })
+}
