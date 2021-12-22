@@ -1,30 +1,25 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC } from "react";
+import { ActiveLink } from "../ActiveLink";
 import { SignInButton } from "../SignInButton";
 import styles from "./styles.module.scss";
 
 export const Header: FC = () => {
 
-    const router = useRouter();
-
-    const validClassPath = (expected: string) => {
-        return router.pathname === expected ? styles.active : ""
-    }
+    const { asPath } = useRouter();
 
     return (
         <header className={styles.headerContainer}>
             <div className={styles.headerContent}>
                 <img src="/images/logo.svg" alt="ig.news" />
                 <nav>
-                    <Link href={"/"}>
-                        <a className={validClassPath("/")}>home</a>
-                    </Link>
-                    <Link href={"/posts"} prefetch>
-                        <a className={validClassPath("/posts")}>
-                            posts
-                        </a>
-                    </Link>
+                    <ActiveLink href={"/"} activeClassName={styles.active}>
+                        home
+                    </ActiveLink>
+                    <ActiveLink href={"/posts"} activeClassName={styles.active}>
+                        posts
+                    </ActiveLink>
                 </nav>
                 <SignInButton />
             </div>
