@@ -81,7 +81,7 @@ export const getStaticPaths: GetStaticPaths<Path> = async () => {
 
     return {
         paths: response.results.map(post => ({ params: { slug: post.uid } })),
-        fallback: false
+        fallback: 'blocking'
     }
 }
 
