@@ -33,7 +33,7 @@ const Home: NextPage<Result> = ({ product }) => {
             get access to all the publications <br />
             <span>for {formatDollar(product.amount)} month</span>
           </p>
-          <SubscribeButton priceId={product.priceId} />
+          <SubscribeButton />
         </section>
         <img src="/images/avatar.svg" alt="Girl coding" />
       </main>
