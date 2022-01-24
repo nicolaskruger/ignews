@@ -18,6 +18,7 @@ export default NextAuth({
     jwt: {
         secret: process.env.SECRET
     },
+    secret: process.env.SECRET,
     callbacks: {
         session: async ({ session }) => {
             try {
