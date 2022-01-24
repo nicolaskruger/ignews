@@ -10,11 +10,14 @@ export default NextAuth({
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
             authorization: {
                 params: {
-                    scope: 'read:user'
+                    scope: 'read:user',
                 }
-            }
+            },
         }),
     ],
+    jwt: {
+        secret: process.env.SECRET
+    },
     callbacks: {
         session: async ({ session }) => {
             try {
